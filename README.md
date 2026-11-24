@@ -31,9 +31,9 @@ Private VMware network (host-only). Details: [documentation/lab-architecture.md]
 - [x] Folder permissions tested (allowed and denied)
 - [ ] GPOs created, linked and verified with `gpresult`
 - [ ] CLIENT01 joined, domain login tested
-- [ ] PowerShell scripts tested
+- [x] PowerShell scripts tested
 - [ ] Troubleshooting scenarios executed and written up
-- [ ] Event Viewer investigation (4624, 4625, 4740)
+- [x] Event Viewer investigation (4624, 4625, 4740)
 
 ## Security notes
 Lab only. Never commit passwords, recovery keys or real employee data. Scripts ask for passwords at run time. In production, restrict these actions with delegated permissions.
