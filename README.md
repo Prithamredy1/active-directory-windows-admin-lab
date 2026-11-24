@@ -7,10 +7,10 @@ A hands-on enterprise IT support simulation: a Windows Server domain controller 
 ## Architecture
 | VM | Name | IP | Role |
 |---|---|---|---|
-| Windows Server 2022/2025 (evaluation) | DC01 | 192.168.10.10 | AD DS, DNS, Group Policy |
-| Windows 10/11 (evaluation) | CLIENT01 | 192.168.10.20 | Domain-joined client, GPO testing |
+| Windows Server 2022/2025 (evaluation) | DC01 | 192.168.72.10 | AD DS, DNS, Group Policy |
+| Windows 10/11 (evaluation) | CLIENT01 | 192.168.72.20 | Domain-joined client, GPO testing |
 
-Private VMware network (host-only). Details: [documentation/lab-architecture.md](documentation/lab-architecture.md).
+Private VMware network (NAT). Details: [documentation/lab-architecture.md](documentation/lab-architecture.md).
 
 ## Contents
 | Folder | What is inside |
@@ -29,7 +29,7 @@ Private VMware network (host-only). Details: [documentation/lab-architecture.md]
 - [x] AD DS + DNS, forest `techcorp.local`
 - [x] OUs, users, security groups
 - [x] Folder permissions tested (allowed and denied)
-- [ ] GPOs created, linked and verified with `gpresult`
+- [ ] GPO created and linked (client verification pending)
 - [ ] CLIENT01 joined, domain login tested
 - [x] PowerShell scripts tested
 - [ ] Troubleshooting scenarios executed and written up

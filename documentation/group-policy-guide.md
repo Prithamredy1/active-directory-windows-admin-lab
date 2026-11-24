@@ -1,4 +1,4 @@
-# Group Policy guide
+﻿# Group Policy guide
 Create `TechCorp-Security-Policy` in Group Policy Management and link it to the OUs. See `gpo/` for settings.
 ```
 gpupdate /force

@@ -1,4 +1,4 @@
-# Event Viewer and security logs
+﻿# Event Viewer and security logs
 Auditing must be enabled (Advanced Audit Policy: Logon, Account Logon, Account Management, Account Lockout) or some events will not appear.
 
 | ID | Meaning |

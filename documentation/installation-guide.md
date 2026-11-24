@@ -1,10 +1,10 @@
-# Installation guide
+﻿# Installation guide
 Run in an elevated PowerShell on **DC01**. Replace the adapter name (`Get-NetAdapter`).
 
 ## 1. Name and IP
 ```powershell
-New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 192.168.10.10 -PrefixLength 24
-Set-DnsClientServerAddress -InterfaceAlias "Ethernet0" -ServerAddresses 192.168.10.10
+New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 192.168.72.10 -PrefixLength 24
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet0" -ServerAddresses 192.168.72.10
 Rename-Computer -NewName DC01 -Restart
 ```
 ## 2. Install AD DS and promote
@@ -21,9 +21,9 @@ The server restarts. Verify: `Get-ADDomain`, `dcdiag /q`.
 .\powershell\create-shares.ps1
 ```
 ## 4. Client
-On CLIENT01 set IP 192.168.10.20, DNS 192.168.10.10, then:
+On CLIENT01 set IP 192.168.72.20, DNS 192.168.72.10, then:
 ```powershell
-Test-NetConnection 192.168.10.10
+Test-NetConnection 192.168.72.10
 nslookup techcorp.local
 Add-Computer -DomainName techcorp.local -Credential TECHCORP\Administrator -Restart
 ```

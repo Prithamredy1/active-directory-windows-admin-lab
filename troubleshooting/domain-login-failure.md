@@ -1,8 +1,8 @@
-# Domain login failure
+﻿# Domain login failure
 **Symptoms:** user cannot sign in to CLIENT01.
 **Checks**
 ```powershell
-Test-NetConnection 192.168.10.10
+Test-NetConnection 192.168.72.10
 nslookup techcorp.local
 Get-ADUser rahul.k -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet
 ```

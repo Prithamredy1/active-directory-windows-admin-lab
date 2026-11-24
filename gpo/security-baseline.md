@@ -1,4 +1,4 @@
-# Security baseline (lab)
+﻿# Security baseline (lab)
 | Setting | Location |
 |---|---|
 | Screen lock after 600 s | Security Options > Interactive logon: Machine inactivity limit |
