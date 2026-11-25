@@ -2,7 +2,7 @@
 
 A hands-on enterprise IT support simulation: a Windows Server domain controller for a fictional company (**TechCorp**, `techcorp.local`), a domain-joined Windows client, Group Policy, PowerShell automation, and documented help desk troubleshooting.
 
-> **Status:** scripts and documentation are written. Lab results and screenshots are added as each phase is completed in my own VMware lab. See the checklist below for what is done.
+> **Status:** Domain, OUs, groups, file permissions, Group Policy and PowerShell tooling are built and tested on a single domain controller. Client-side checks (domain join, GPO verification) are not done yet.
 
 ## Architecture
 | VM | Name | IP | Role |
