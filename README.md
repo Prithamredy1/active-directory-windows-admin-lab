@@ -1,5 +1,7 @@
 ﻿# Active Directory & Windows Administration Lab
 
+**Project page:** https://active-directory-windows-admin-lab.vercel.app
+
 A hands-on enterprise IT support simulation: a Windows Server domain controller for a fictional company (**TechCorp**, `techcorp.local`), a domain-joined Windows client, Group Policy, PowerShell automation, and documented help desk troubleshooting.
 
 > **Status:** Domain, OUs, groups, file permissions, Group Policy and PowerShell tooling are built and tested on a single domain controller. Client-side checks (domain join, GPO verification) are not done yet.
