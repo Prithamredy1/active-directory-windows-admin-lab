@@ -32,7 +32,7 @@ Private VMware network (NAT). Details: [documentation/lab-architecture.md](docum
 - [ ] GPO created and linked (client verification pending)
 - [ ] CLIENT01 joined, domain login tested
 - [x] PowerShell scripts tested
-- [ ] Troubleshooting scenarios executed and written up
+- [x] Troubleshooting scenarios: 2 of 10 written up (account lockout, folder permissions)
 - [x] Event Viewer investigation (4624, 4625, 4740)
 
 ## Security notes
