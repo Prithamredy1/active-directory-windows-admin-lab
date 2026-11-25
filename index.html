@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Active Directory Lab · Windows Server 2025</title>
+<meta name="description" content="Active Directory lab: domain, OUs, groups, least-privilege shares, Group Policy, PowerShell automation and event log investigation.">
+<style>
+:root{--ink:#16233b;--bg:#f4f6fa;--panel:#fff;--line:#d8deea;--mute:#56637a;--acc:#1d4ed8;--hero:#16233b}
+@media (prefers-color-scheme:dark){:root{--ink:#e8ecf4;--bg:#0e1522;--panel:#172033;--line:#2a3550;--mute:#9aa8c2;--acc:#7aa2ff;--hero:#0a101b}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+a{color:var(--acc)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{background:var(--hero);color:#fff;padding:56px 0 48px}
+header p{max-width:660px;color:#c5cfe2;margin:12px 0 24px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0}
+h2{font-size:24px;margin:0 0 6px}
+.btn{display:inline-block;padding:10px 18px;border-radius:6px;font-weight:600;text-decoration:none;margin:0 8px 8px 0;background:#3b6cf0;color:#fff}
+.btn.alt{background:transparent;border:1px solid #5b6a85}
+section{padding:44px 0 0}
+.sub{color:var(--mute);margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p,.card li{color:var(--mute)}
+.card p{margin:0}
+figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+figure img{display:block;width:100%;height:auto}
+figcaption{padding:12px 16px;color:var(--mute);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none;margin:12px 0 0}
+.chips li{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:3px 14px;font-size:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+ul.tick{margin:0;padding-left:20px}
+footer{padding:48px 0;color:var(--mute);font-size:14px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Active Directory Lab</h1>
+  <p>A small company network (<code>techcorp.local</code>) built on Windows Server 2025: domain, departments, groups, least-privilege shared folders, Group Policy, PowerShell automation and Security log investigation.</p>
+  <a class="btn" href="https://github.com/Prithamredy1/active-directory-windows-admin-lab">View on GitHub</a>
+  <a class="btn alt" href="#evidence">See the evidence</a>
+</div></header>
+
+<main class="wrap">
+<section>
+  <h2>What was built</h2>
+  <p class="sub">Everything below was run in my own VMware lab, and each item has a screenshot.</p>
+  <div class="cards">
+    <div class="card"><h3>Domain</h3><p>Windows Server 2025 promoted to a domain controller for <code>techcorp.local</code> with AD DS and DNS.</p></div>
+    <div class="card"><h3>Directory</h3><p>Six OUs, four users, and four security groups for HR, Finance, IT and the help desk.</p></div>
+    <div class="card"><h3>Access control</h3><p>HR, Finance and IT folders where only the matching group has access. Tested allowed and denied.</p></div>
+    <div class="card"><h3>Group Policy</h3><p>Password and lockout policy, plus a GPO for the HR OU with a secure screen lock and Control Panel restriction.</p></div>
+    <div class="card"><h3>Automation</h3><p>PowerShell scripts for users, groups, shares, password reset, unlock, disable and enable, with an action log.</p></div>
+    <div class="card"><h3>Investigation</h3><p>Account lockout traced through Security events 4625 and 4740, then unlocked and documented.</p></div>
+  </div>
+</section>
+
+<section id="evidence">
+  <h2>Directory and permissions</h2>
+  <p class="sub">Domain, organizational units and the least-privilege folder test.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="screenshots/02-domain-controller/02-get-addomain.png" alt="PowerShell output showing the techcorp.local domain"><figcaption>The <code>techcorp.local</code> domain, created with AD DS.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/04-organizational-units/01-ou-list.png" alt="List of organizational units"><figcaption>Organizational units: IT, HR, Finance, Sales, Service Accounts, Workstations.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/05-security-groups/01-hr-folder-permissions.png" alt="NTFS and share permissions on the HR folder"><figcaption>HR folder permissions: only HR_Group, Administrators and SYSTEM.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/05-security-groups/02-rahul-allowed-denied.png" alt="Rahul can open HR and is denied on Finance"><figcaption>Rahul (HR) opens the HR share and is denied on Finance.</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Group Policy</h2>
+  <p class="sub">Configured and linked. Client-side verification is not done yet.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="screenshots/06-group-policy/01-password-lockout-policy.png" alt="Domain password and lockout policy values"><figcaption>12-character passwords, lockout after 5 attempts for 15 minutes.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/06-group-policy/04-gpo-settings.png" alt="Group Policy settings report"><figcaption>TechCorp-Security-Policy settings, linked to the HR OU.</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Automation and investigation</h2>
+  <p class="sub">PowerShell scripts and the account lockout case.</p>
+  <div class="grid">
+    <figure><img loading="lazy" src="screenshots/08-powershell/03-disable-enable.png" alt="Disabling and enabling a user with PowerShell"><figcaption>Disable and enable an account with the help desk scripts.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/09-event-viewer/02-account-lockout-4740.png" alt="Security event 4740 account lockout"><figcaption>Event 4740 shows <code>rahul.k</code> locked out after failed attempts.</figcaption></figure>
+    <figure><img loading="lazy" src="screenshots/08-powershell/06-unlock-account.png" alt="Unlocking an account with PowerShell"><figcaption>Unlock script: LockedOut changes from True to False.</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Tools</h2>
+  <ul class="chips">
+    <li>Windows Server 2025</li><li>Active Directory</li><li>DNS</li><li>Group Policy</li><li>PowerShell</li><li>NTFS / SMB permissions</li><li>Event Viewer</li><li>VMware</li><li>Git</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Scope</h2>
+  <p class="sub">What is done, and what is not.</p>
+  <div class="two">
+    <div class="card"><h3>Built and tested</h3><ul class="tick"><li>Domain controller, OUs, users, groups</li><li>Least-privilege shares, tested both ways</li><li>PowerShell scripts</li><li>Lockout investigation with event logs</li></ul></div>
+    <div class="card"><h3>Not done yet</h3><ul class="tick"><li>Windows client joined to the domain</li><li>Group Policy verified on a client</li><li>8 of 10 planned troubleshooting scenarios</li></ul>
+    <p style="margin-top:10px">This is a local lab. The page shows screenshots from my own VMs, not a running service.</p></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">Built by Beem Sai Pritham Reddy · <a href="https://github.com/Prithamredy1/active-directory-windows-admin-lab">Scripts, docs and reports on GitHub</a></div></footer>
+</body>
+</html>
